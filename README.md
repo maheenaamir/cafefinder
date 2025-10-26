@@ -1,2 +1,245 @@
-# cafefinder
-Here’s a **350-character GitHub description** for your *Cute Cafe Finder*:  ---  ☕ **Cute Cafe Finder** — A pastel-themed web app built with HTML, CSS &amp; JavaScript to help you find cozy cafés by vibe or rating. ✨ Search, filter, and preview cafés on a cute UI with soft gradients and smooth interactivity. Made with love, foam, and caffeine! 
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cute Cafe Finder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#FFF8FB;
+      --card:#ffffff;
+      --accent:#FF8AB3;
+      --accent-2:#FFD6A5;
+      --muted:#6b7280;
+      --glass: rgba(255,255,255,0.7);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: radial-gradient(1200px 400px at 10% 10%, #FFF0F6 0%, transparent 10%),
+                  radial-gradient(800px 300px at 90% 80%, #FFF7EA 0%, transparent 8%),
+                  var(--bg);
+      color:#111827;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:32px;
+    }
+    .app{
+      max-width:1100px;
+      margin:0 auto;
+    }
+    header{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      margin-bottom:20px;
+    }
+
+    .logo{
+      width:68px;height:68px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-family:'Comfortaa',cursive;font-size:20px;box-shadow:0 6px 20px rgba(255,138,179,0.18);
+    }
+    h1{font-family:'Comfortaa',cursive;margin:0;font-size:26px}
+    p.lead{margin:0;color:var(--muted);font-size:14px}
+
+    .controls{
+      margin-top:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+    }
+    .search {
+      flex:1;min-width:220px;display:flex;align-items:center;background:var(--glass);backdrop-filter: blur(6px);padding:8px 12px;border-radius:12px;border:1px solid rgba(0,0,0,0.04);
+    }
+    .search input{border:0;background:transparent;outline:none;font-size:15px;padding:8px;width:100%}
+    .chips{display:flex;gap:8px}
+    .chip{padding:8px 10px;border-radius:999px;background:transparent;border:1px solid rgba(0,0,0,0.06);cursor:pointer;font-size:13px}
+    .chip.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;border:none;box-shadow:0 6px 18px rgba(255,138,179,0.12)}
+
+    .main{
+      margin-top:22px;display:grid;grid-template-columns:1fr 360px;gap:24px;
+    }
+
+    /* left list */
+    .list{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;
+    }
+    .card{
+      background:var(--card);border-radius:14px;padding:0;overflow:hidden;box-shadow:0 8px 30px rgba(2,6,23,0.06);border:1px solid rgba(0,0,0,0.03);
+    }
+    .card img{width:100%;height:150px;object-fit:cover;display:block}
+    .card-body{padding:12px;display:flex;flex-direction:column;gap:8px}
+    .card h3{margin:0;font-size:16px}
+    .meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted)}
+    .tags{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{background:#fff8f9;padding:6px 8px;border-radius:999px;font-size:12px;border:1px solid rgba(255,138,179,0.14)}
+
+    /* right panel */
+    .panel{background:linear-gradient(180deg,rgba(255,255,255,0.8),rgba(255,255,255,0.7));padding:16px;border-radius:14px;border:1px solid rgba(0,0,0,0.03);box-shadow:0 10px 30px rgba(2,6,23,0.04)}
+    .panel h4{margin:0 0 12px 0;font-size:16px}
+    .map{height:260px;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,#FFF0F6,#FFF7EA);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px}
+
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+
+    /* responsive */
+    @media (max-width:900px){
+      .main{grid-template-columns:1fr}
+      .panel{order:2}
+    }
+
+    /* tiny cute decorations */
+    .sparkle{position:relative}
+    .sparkle:after{content:'☕';position:absolute;right:-6px;top:-12px;transform:rotate(-10deg);font-size:20px;opacity:0.9}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="logo">cf</div>
+      <div>
+        <h1 class="sparkle">Cute Cafe Finder</h1>
+        <p class="lead">Find cozy cafés, filter by vibe, and save your favorites ✨</p>
+      </div>
+    </header>
+
+    <div class="controls">
+      <div class="search" role="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-right:8px;opacity:.7"><path d="M21 21l-4.35-4.35" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <input id="q" placeholder="Search cafes (name, neighborhood...)" />
+      </div>
+      <div class="chips" id="filters">
+        <button class="chip active" data-filter="all">All</button>
+        <button class="chip" data-filter="cozy">Cozy</button>
+        <button class="chip" data-filter="work-friendly">Work-friendly</button>
+        <button class="chip" data-filter="outdoor">Outdoor</button>
+        <button class="chip" data-filter="desserts">Desserts</button>
+      </div>
+    </div>
+
+    <div class="main">
+      <div>
+        <div class="list" id="list">
+          <!-- Cards injected by JS -->
+        </div>
+      </div>
+
+      <aside class="panel">
+        <h4>Map preview</h4>
+        <div class="map" id="map">Select a cafe to preview on map</div>
+
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <button id="sortRating" class="chip">Sort: Rating ▼</button>
+          <button id="reset" class="chip">Reset</button>
+        </div>
+      </aside>
+    </div>
+
+    <footer>Made with lots of foam & ❤️ — Try typing "cozy" or click a tag!</footer>
+  </div>
+
+  <script>
+    const cafes = [
+      {id:1,name:'Sugar & Steam',tag:['cozy','desserts'],neigh:'Old Town',rating:4.8,img:'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=5a7bb24f6b4f6b5b6b3e'},
+      {id:2,name:'Brewberry',tag:['work-friendly'],neigh:'Riverside',rating:4.6,img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=3b0a730efa3b5f3a45f0'},
+      {id:3,name:'Petal & Pour',tag:['cozy','outdoor'],neigh:'Garden District',rating:4.7,img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9b8f0b1d5b6d3f6cb6b7'},
+      {id:4,name:'Notebook Nook',tag:['work-friendly','cozy'],neigh:'Downtown',rating:4.5,img:'https://images.unsplash.com/photo-1506086679525-6b4d4f4f6f0f?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=6c5f'},
+      {id:5,name:'Creamy Corner',tag:['desserts','outdoor'],neigh:'Seaside',rating:4.4,img:'https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=5c90'},
+      {id:6,name:'Latte Lullaby',tag:['cozy','desserts'],neigh:'Chinatown',rating:4.9,img:'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=7d2a'}
+    ];
+
+    const listEl = document.getElementById('list');
+    const qEl = document.getElementById('q');
+    const filtersEl = document.getElementById('filters');
+    const mapEl = document.getElementById('map');
+    const sortBtn = document.getElementById('sortRating');
+    const resetBtn = document.getElementById('reset');
+
+    let activeFilter = 'all';
+    let sortDesc = true;
+
+    function render(cards){
+      listEl.innerHTML = '';
+      if(cards.length === 0){
+        listEl.innerHTML = '<div style="grid-column:1/-1;padding:28px;background:linear-gradient(180deg,#fff,#fff);border-radius:12px;text-align:center;color:var(--muted)">No cafes match. Try another search.</div>';
+        return;
+      }
+      cards.forEach(c=>{
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${c.img}" alt="${c.name}">
+          <div class="card-body">
+            <h3>${c.name}</h3>
+            <div class="meta"><span>${c.neigh}</span><strong>${c.rating.toFixed(1)} ★</strong></div>
+            <div class="tags">${c.tag.map(t=>`<span class="tag" data-tag="${t}">${t}</span>`).join('')}</div>
+          </div>
+        `;
+        card.addEventListener('click',()=>selectCafe(c));
+        listEl.appendChild(card);
+      });
+    }
+
+    function selectCafe(c){
+      mapEl.innerHTML = `<div style="text-align:center"><strong>${c.name}</strong><div style="font-size:13px;color:var(--muted);margin-top:6px">${c.neigh} • ${c.tag.join(', ')}</div><div style="margin-top:12px;border-radius:8px;overflow:hidden;height:140px;background-image:url('${c.img}');background-size:cover;background-position:center"></div></div>`;
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    function applyFilters(){
+      const q = qEl.value.trim().toLowerCase();
+      let results = cafes.filter(c=>{
+        const matchesFilter = activeFilter === 'all' ? true : c.tag.includes(activeFilter);
+        const matchesQuery = q === '' || c.name.toLowerCase().includes(q) || c.neigh.toLowerCase().includes(q) || c.tag.join(' ').includes(q);
+        return matchesFilter && matchesQuery;
+      });
+      if(sortDesc) results.sort((a,b)=>b.rating - a.rating);
+      else results.sort((a,b)=>a.rating - b.rating);
+      render(results);
+    }
+
+    // wire up chips
+    filtersEl.addEventListener('click',(e)=>{
+      if(e.target.matches('.chip')){
+        [...filtersEl.querySelectorAll('.chip')].forEach(c=>c.classList.remove('active'));
+        e.target.classList.add('active');
+        activeFilter = e.target.dataset.filter;
+        applyFilters();
+      }
+    });
+
+    // wire up tag clicks inside list
+    listEl.addEventListener('click',(e)=>{
+      if(e.target.matches('.tag')){
+        const tag = e.target.dataset.tag;
+        // activate corresponding chip if exists
+        const chip = [...filtersEl.querySelectorAll('.chip')].find(c=>c.dataset.filter === tag);
+        if(chip){chip.click();}
+        else{activeFilter = tag; applyFilters();}
+      }
+    });
+
+    qEl.addEventListener('input',()=>applyFilters());
+
+    sortBtn.addEventListener('click',()=>{
+      sortDesc = !sortDesc;
+      sortBtn.textContent = `Sort: Rating ${sortDesc? '▼' : '▲'}`;
+      applyFilters();
+    });
+
+    resetBtn.addEventListener('click',()=>{
+      qEl.value = '';
+      activeFilter = 'all';
+      [...filtersEl.querySelectorAll('.chip')].forEach(c=>c.classList.remove('active'));
+      filtersEl.querySelector('.chip[data-filter="all"]').classList.add('active');
+      sortDesc = true;
+      sortBtn.textContent = 'Sort: Rating ▼';
+      mapEl.innerHTML = 'Select a cafe to preview on map';
+      applyFilters();
+    });
+
+    // initial render
+    render(cafes);
+  </script>
+</body>
+</html>
+
